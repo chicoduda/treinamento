@@ -1,4 +1,4 @@
-Aula 1 - geiHub e OpenSource
+Aula 1 - GitHub e OpenSource
 
 Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
 
