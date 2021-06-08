@@ -105,3 +105,291 @@ Na nova tela que abrir, altere a mensagem que será atribuida ao novo commit, pa
 Execute git log --oneline novamente e confira que agora os três commits viraram apenas 1;
 
 Repita os passos do 15 ao 27, trocando as mensagens e a issue pelo que fizer sentido para seu caso.
+
+
+
+Aula 2 - Controle avançado de conflitos
+
+Acesse a pasta do seu repositório no computador;
+
+Execute git checkout master para trabalhar na branch master;
+
+Execute git pull origin master e git pull local master para garantir que você está com o código atualizado e sincronizado com os dois repositórios remotos;
+
+Execute git checkout -b novo-release para passar a trabalhar em um nova branch, chamada novo-release;
+
+Substitua as tags <h1> por <h2> no código do arquivo index.html;
+
+Execute git add index.html e git commit -m "h1 -> h2" para commitar esta alteração;
+
+Confira o hash do commit que foi mostrado na saída do comando. Copie ele;
+
+Altere o título do arquivo (na tag <title>) para "Lista de cursos";
+
+Execute git add index.html e git commit -m "Simplificando o título" para commitar esta alteração;
+
+Execute git checkout master para voltar a trabalhar na branch master (pois há um bug que você deve corrigir antes de continuar o trabalho do seu novo release);
+
+Execute o comando git cherry-pick {hash} para trazer um commit para a branch master. Substitua {hash} pelo hash que foi copiado no passo 6;
+
+Confira que apenas a alteração desejada foi aplicada no master, e não toda a branch novo-release;
+
+Execute o comando git rebase novo-release e confira que o Git executa apenas um trabalho, embora hajam dois commits na nova branch, pois um já foi trazido para o master;
+
+Altere o título da página (na tag <title>) para "Lista de cursos de DevOps";
+
+Execute git add index.html e git commit -m "Adicionando DevOps no título" para commitar esta alteração;
+
+Altere o título da página (na tag <title>) para "Lista de cursos da Alura";
+
+Execute git add index.html e git commit -m "Mudando título" para commitar esta alteração;
+
+Altere o título da página (na tag <title>) para "Cursos da Alura";
+
+Execute git add index.html e git commit -m "Mexendo no título" para commitar esta alteração;
+
+Altere o título do arquivo (na tag <title>) para "Lista de cursos";
+
+Execute git add index.html e git commit -m "Título alterado" para commitar esta alteração;
+
+Execute o comando git bisect start para informar ao Git que você vai iniciar uma busca por determinada alteração;
+
+Execute o comando git bisect bad HEAD para informar que o estado atual do código está "ruim", ou seja, o título não está no estado que você quer;
+
+Executando git log --oneline, copie o hash do commit com a mensagem "Simplificando o título";
+
+Execute o comando git bisect good {hash}, substituindo {hash} pelo hash copiado no passo anterior, para informar que o estado atual do código está "bom", ou seja, o título está no estado que você quer;
+
+Confira no código que agora o título está como você quer;
+
+Execute git bisect good para informar ao Git que neste commit o código ainda está como você quer;
+
+Confira no código que agora o título não está mais como você quer;
+
+Execute git bisect bad para informar ao Git que neste commit o código não está mais como você quer;
+
+Note que o Git encontrou o exato commit onde o título deixou de estar no estado em que você quer;
+
+Execute git bisect reset para indicar que você finalizou a busca;
+
+Execute o comando git show {hash}, substituindo {hash} pelo hash conferido no passo 30. Veja que é exatamente a alteração que você estava buscando;
+
+Para reverter esta alteração, execute git revert {hash}, substituindo {hash} pelo hash conferido no passo 30. Resolva quaisquer conflitos que possam ter sido encontrados;
+
+Execute git blame index.html e confira o responsável por cada linha do arquivo.
+
+
+Aula 3 - Estratégias de Branching
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+Execute git log --graph e confira que, embora haja várias linhas de desenvolvimento, tudo começa e termina na linha da branch master;
+
+Execute o comando git branch -d titulo para remover a branch titulo;
+
+Execute o comando git branch -D novo-release para remover a branch novo-release, mesmo que ela tenha commits à frente do master;
+
+Execute o comando git branch development para criar um nova branch de desenvolvimento chamado development;
+
+Execute o comando git checkout development para passar a trabalhar na branch development;
+
+Execute o comando git checkout -b feature/lista-cursos-cloud para criar um nova branch, chamada feature/lista-cursos-cloud;
+
+Adicione o seguinte conteúdo após a lista de cursos de DevOps:
+
+<h2>Cursos de Cloud:</h2>
+<dl>
+ <dt>Amazon EC2</dt>
+ <dd>Faça um deploy da sua webapp com alta disponibilidade e escalabilidade.</dd>
+
+ <dt>Amazon S3</dt>
+ <dd>Manipule e armazene objetos na nuvem</dd>
+</dl>COPIAR CÓDIGO
+Execute git add index.html e git commit -m "Cursos de EC2 e S3 adicionados" para commitar esta alteração;
+
+Adicione a esta lista os dois seguintes cursos:
+
+ <dt>Amazon Elastic Beanstalk Parte 1</dt>
+ <dd>Container Docker</dd>
+
+ <dt>Amazon ECS</dt>
+ <dd>Gerencie Docker na nuvem da AWS</dd>COPIAR CÓDIGO
+Execute git add index.html e git commit -m "Cursos de Beanstalk e ECS adicionados" para commitar esta alteração;
+
+Execute git checkout development para voltar para a branch de desenvolvimento;
+
+Execute git checkout -b feature/lista-cursos-linux para passar a trabalhar em um nova branch, chamada feature/lista-cursos-linux;
+
+Adicione o seguinte conteúdo após a lista de cursos de DevOps:
+
+<h2>Cursos de Linux:</h2>
+<dl>
+<dt>Linux I</dt>
+<dd>Conhecendo e utilizando o terminal</dd>
+
+<dt>Linux II</dt>
+<dd>Programas, processos e pacotes</dd>
+</dl>COPIAR CÓDIGO
+Execute git add index.html e git commit -m "Cursos de Linux I e II adicionados" para commitar esta alteração;
+
+Execute git checkout development para voltar para a branch de desenvolvimento;
+
+Execute o comando git branch para conferir quantas e quais branches você têm criadas atualmente;
+
+Execute o comando git merge feature/lista-cursos-linux para trazer os cursos de Linux para a branch de desenvolvimento;
+
+Execute o comando git checkout feature/lista-cursos-cloud para voltar à branch feature/lista-cursos-cloud;
+
+Adicione, à lista de cursos de Cloud, o seguinte curso:
+
+<dt>Google Cloud</dt>
+<dd>Deploy de uma aplicação em Spring MVC</dd>COPIAR CÓDIGO
+Execute git add index.html e git commit -m "Curso de Google Cloud adicionado" para commitar esta alteração;
+
+Execute git checkout development para voltar para a branch de desenvolvimento;
+
+Execute o comando git merge feature/lista-cursos-cloud para trazer os cursos de Cloud para a branch de desenvolvimento;
+
+Resolva o conflito mantendo as duas listas novas de cursos;
+
+Execute git add index.html e git commit para continuar o processo de merge;
+
+Volte para a branch master com o comando git checkout master;
+
+Trabalhe em um nova branch, chamada hotfix/v0.1.1, utilizando o comando git checkout -b hotfix/v0.1.1;
+
+Altere o título da página (na tag <title>) para "Lista de cursos";
+
+Execute git add index.html e git commit -m "Removendo o nome da Alura do título" para commitar esta alteração;
+
+Volte para a branch master, com o comando git checkout master;
+
+Una o trabalho do hotfix, com o comando git merge hotfix/v0.1.1;
+
+Crie uma nova tag que representa uma nova versão, utilizando o comando git tag -a v0.1.1 -m "Versão com correção no título";
+
+Vá para a branch de desenvolvimento com git checkout development;
+
+Traga a correção do bug com git merge hotfix/v0.1.1;
+
+Crie um nova branch, chamada de release/v0.2.0, com o comando git checkout -b release/v0.2.0;
+
+Adicione os dois seguintes cursos na lista de cursos de Linux:
+
+<dt>Shell Script I</dt>
+<dd>Começando seus scripts de automação de tarefas</dd>COPIAR CÓDIGO
+<dt>Shell Script II</dt>
+<dd>Fazendo monitoramento, agendando tarefas e backup</dd>COPIAR CÓDIGO
+Execute git add index.html e git commit -m "Corrigindo bug: Cursos de Shell faltantes" para commitar esta alteração;
+
+Volte para a branch master, com o comando git checkout master;
+
+Una todo o trabalho referente à nova release, com git merge release/v0.2.0;
+
+Crie uma nova tag que representa uma nova versão, utilizando o comando git tag -a v0.2.0 -m "Novas listas adicionadas";
+
+Execute o comando git branch e confira todos as branches criadas neste processo;
+
+
+Aula 4 - Ferramentas Visuais
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+Acesse o site https://git-cola.github.io/downloads.html e realize o download e instalação do Git Cola;
+
+Abra o Git Cola e selecione o seu repositório, para que o programa possa gerenciar as alterações;
+
+Em seu repositório, adicione dois pontos (:) após cada título das listas de cursos;
+
+No Git Cola, aguarde alguns segundos e observe que a sua alteração já pode ser visualizada;
+
+Com o botão direito do mouse, clique no arquivo modificado e clique em Stage Selecionado, para realizar o trabalho equivalente ao git add;
+
+Escreva uma mensagem de commit e clique no botão Commit;
+
+No menu Ver, clique em Visualizar Histórico e confira uma visualização mais interessante do seu log;
+
+No menu Ações, clique em Push para enviar as alterações para o seu repositório remoto, de nome local, na branch master;
+
+Instale o GitHub Desktop:
+
+9.1. Se você estiver no Windows ou macOS, acesse https://desktop.github.com/ para instalá-lo;
+
+9.2. Se você estiver utilizando Linux, acesse https://github.com/shiftkey/desktop para baixar e instalar;
+
+Faça login com o seu usuário e preencha os dados de configuração;
+
+Se familiarize com a interface do GitHub Desktop;
+
+Acesse o site https://www.gitkraken.com/download para realizar o download e instalar o Git Kraken;
+
+Após instalado, faça login utilizando o seu usuário do GitHub (ou crie uma nova conta, se preferir);
+
+Clique em Open a Repo para abrir o seu repositório;
+
+Clique no botão Pull para trazer todas as alterações do repositório remoto;
+
+Analise e se familiarize com a interface do Git Kraken;
+
+Clique no ícone de menu no canto superior direito da interface, e depois clique em Preferences;
+
+Na tela que abrir, vá para a aba Git Flow. Analise as opções, altere caso desejar, e depois clique em Initialize Git Flow;
+
+No canto esquerdo da tela principal do programa, na parte Git Flow, clique na seta para a direita que é exibida, e então clique em Feature;
+
+Defina o nome da branch que será criada como feature/lista-cursos-redes;
+
+Clique em Start Feature. O Git Kraken irá criar esta branch para você;
+
+No código fonte, adicione o seguinte conteúdo:
+
+<h2>Redes</h2>
+<dl>
+<dt>Redes 1</dt>
+<dd>Introdução, Conceitos e Prática</dd>
+
+<dt>Redes 2</dt>
+<dd>Montando um projeto do cliente até o provedor de serviços</dd>
+</dl>COPIAR CÓDIGO
+No canto direito da tela, clique no botão Stage all changes para adicionar as alterações que deverão ser commitadas;
+
+Logo abaixo, defina a mensagem de commit como "Lista de cursos de redes" e clique em Commit changes;
+
+Novamente no canto esquerdo, na aba Git Flow, clique na seta para a direita, e clique no botão Finish feature/lista-cursos-redes;
+
+Clique no botão Finish feature para que o Git Kraken faça o merge para a branch develop e remova a branch atual;
+
+
+
+
+Aula 5 - Hooks e Deploy com Git
+
+Chegou a hora de você pôr em prática o que foi visto na aula. Para isso, execute os passos listados abaixo.
+
+Na linha de comando, acesse, dentro da pasta do seu repositório, a pasta .git/hooks;
+
+Dentro dessa pasta, crie o arquivo pre-commit, com o seguinte conteúdo:
+
+#!/bin/sh
+echo "Você está prestes a commitar. :-)"COPIAR CÓDIGO
+Se você estiver em uma plataforma diferente do Windows, digite chmod u+x pre-commit para dar permissão de execução a este arquivo;
+
+Execute alguma alteração qualquer no código;
+
+Digite os comandos git add index.html e git commit -m "Commit teste" para realizar um commit;
+
+Verifique que a mensagem "Você está prestes a commitar. :-)" foi exibida, logo, o seu hook foi executado com sucesso;
+
+Fora desta pasta, crie uma nova pasta chamada web;
+
+Dentro da pasta que você criou no curso anterior para ser o seu servidor remoto, acesse a pasta .git/hooks;
+
+Nesta pasta, crie um arquivo chamado post-receive com o seguinte conteúdo:
+
+#!/bin/sh
+git --git-dir={caminho_da_pasta_do_servidor} --work-tree={caminho_da_pasta_web} checkout -fCOPIAR CÓDIGO
+Substitua acima {caminho_da_pasta_do_servidor} pelo caminho da pasta criada no curso anterior para ser seu servidor remoto, e {caminho_da_pasta_web} pelo caminho da pasta criada no passo 7;
+
+De volta para a pasta que contém o seu código, execute o comando git push local master para enviar as alterações feitas no passo 4 para o servidor;
+
+Verifique que agora o arquivo index.html está presente na pasta criada no passo 7, ou seja, você fez o deploy da sua aplicação.
