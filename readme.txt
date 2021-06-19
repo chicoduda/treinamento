@@ -1,4 +1,4 @@
-Treinamento Alura (Teste alteração na branch ----)
+Treinamento Alura
 
 Git e GitHub
 
